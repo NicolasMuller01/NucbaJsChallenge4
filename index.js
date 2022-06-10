@@ -34,17 +34,18 @@ const pizza = [
     }
 ];
 
-localStorage.setItem('pizza', JSON.stringify(pizza));
+let pizzaFiltrada = [];
 
 btn.addEventListener('click',()=>{
    try{
-    let pizzaFiltrada = pizza.filter(item => item.id==inputt.value).map(item =>({
+        pizzaFiltrada = pizza.filter(item => item.id==inputt.value).map(item =>({
         id:item.id,
         nombre:item.nombre,
         ingredientes:item.ingredientes,
         precio:item.precio,
         image:item.image
     }))
+    localStorage.setItem('pizza', JSON.stringify(pizzaFiltrada));
     if(pizzaFiltrada[0].id == inputt.value){
         template.innerHTML=`
         <h2>id: ${pizzaFiltrada[0].id}</h2>
@@ -57,4 +58,17 @@ btn.addEventListener('click',()=>{
    catch(err){
     return template.innerHTML=`<h1>No existe ese id pa</h1>`
    }
-})
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    data = JSON.parse(localStorage.getItem('pizza'));
+    if (data != []){
+        template.innerHTML=`
+        <h2>id: ${data[0].id}</h2>
+        <h1>nombre: ${data[0].nombre}</h1>
+        <ul>Ingredientes: ${data[0].ingredientes.map(item =>{return`<li>${item}</li>`}).join("")}</ul>
+        <h3>precio: $${data[0].precio}</h3>
+        <img src="${data[0].image}"></img>`
+        array = data;
+    } 
+  });
